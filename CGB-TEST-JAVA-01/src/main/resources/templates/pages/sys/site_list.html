@@ -1,0 +1,195 @@
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">加盟实训店管理</h3>
+
+				<div class="box-tools">
+					<div class="input-group input-group-sm" style="width: 350px;">
+						<input type="text" name="table_search" id="searchNameId"
+							class="form-control pull-right" placeholder="门店">
+
+						<div class="input-group-btn">
+							<button type="button" class="btn btn-default btn-search">
+								<i class="fa fa-search"></i>
+							</button>
+							<button type="button" class="btn btn-default btn-delete">删除</button>
+							<button type="button" class="btn btn-default btn-add">添加</button>
+                            <button type="button" class="btn btn-default btn-update">修改</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+						    <th>选择框</th>
+							<th>ID</th>
+							<th>店名</th>
+							<th>城市</th>
+							<th>具体地名</th>
+
+						</tr>
+					</thead>
+					<tbody id="tbodyId"></tbody>
+				</table>
+			</div>
+			<div id="pageId" class="box-footer clearfix"></div>
+			<!-- /.box-body -->
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+<script type="text/javascript"
+	src="bower_components/treegrid/jquery.treegrid.extension.js"></script>
+<script type="text/javascript"
+	src="bower_components/treegrid/jquery.treegrid.min.js"></script>
+<script type="text/javascript"
+	src="bower_components/treegrid/tree.table.js"></script>
+<script type="text/javascript">
+/**
+ * 初始化表格的列
+ */
+
+
+
+$(function(){
+	 $("#pageId").load("doPageUI",function(){
+	doGetObjects();
+	 });
+	//按钮事件注册
+	$(".input-group-btn")
+	.on("click",".btn-delete",doDeleteObject)
+	.on("click",".btn-add,.btn-update",doLoadEditUI);
+})//$(document).ready(function(){})
+
+//异步加载编辑页面
+function doLoadEditUI(){
+	//1.定义标题
+	var title;
+	if($(this).hasClass("btn-add")){
+		title="添加场地信息";
+	}else if($(this).hasClass("btn-update")){
+		//设置标题
+		title="修改场地信息";
+		//获取选中的当前行的记录(从tr对象上获取)
+		var rowData=doGetCheckedItem();
+		if(!rowData){
+			alert("请先选择");
+			return;
+		}
+		//重新绑定数据到$("#mainContentId")
+		$("#mainContentId").data("rowData",rowData); 
+	}
+	//2.异步加载编辑页面
+	var url="site/site_edit";
+	$("#mainContentId").load(url,function(){
+		$(".box-title").html(title);
+	});//假如"#mainContentId"这个位置有页面则replace
+}
+
+function doGetCheckedItem(){
+	var tr=$("tbody input[type='radio']:checked")
+	       .parents("tr");
+	if(tr)return tr.data("rowData");
+}
+
+
+function doDeleteObject(){
+	  //1.获取选中的值
+	   var array=[];
+	   $("#tbodyId input[type='radio']").each(function(){
+		   if($(this).prop("checked")){
+			   array.push($(this).val());
+		   }
+	   });
+	   //2.构建参数对象
+	   var params={id:array.toString()};
+	   //3.异步请求执行删除
+	   var url="site/doDeleteObject";
+	   $.post(url,params,function(result){
+		   if(result.state==1){
+			   alert(result.message);
+			   doGetObjects();
+		   }else{
+			   alert(result.message);
+		   }
+	   })
+}
+//获取选中的记录的id值
+/* function doGetCheckedId(){
+	  //1.获取选中的值
+	   var array=[];
+	   $("#tbodyId input[type='radio']").each(function(){
+		   if($(this).prop("checked")){
+			   array.push($(this).val());
+		   }
+	   });
+	   //2.构建参数对象
+	   var params={id:array.toString()};
+	   //3.异步请求执行删除
+	   var url="site/doDeleteObject.do";
+	   $.post(url,params,function(result){
+		   if(result.state==1){
+			   alert(result.message);
+			   doGetObjects();
+		   }else{
+			   alert(result.message);
+		   }
+	   })
+} */
+
+
+function doGetObjects(){
+	   var url="site/doFindPageObjects";
+	   var pageCurrent=$("#pageId").data("pageCurrent");
+	   if(!pageCurrent)pageCurrent=1;
+	   var params={"pageCurrent":pageCurrent}
+	   params.name=$("#searchNameId").val();
+	   $.getJSON(url,params,function(result){
+		   //console.log(result)
+		   doHandleResponseResult(result);
+	   });
+}
+function doHandleResponseResult(result){
+	   if(result.state==1){
+		   //console.log(result.data.records);
+		  doSetTableBodyRows(result.data.records);
+		  doSetPagination(result.data);
+		}else{
+		  alert(result.message);
+	   }
+}
+//通过服务端返回的数据初始化页面
+function doSetTableBodyRows(data){
+	  //1.获取tbody对象，并清空内容
+	  var tBody=$("#tbodyId");
+	  tBody.empty();
+	  //2.迭代data内容将数据追加到tbody中
+	  for(var i in data){
+		  var tr=$("<tr></tr>");
+		  tr.data("rowData",data[i]);
+		  var tds=doCreateTds(data[i]);
+		  tr.append(tds);
+		  tBody.append(tr);
+	  }
+}
+function doCreateTds(row){
+	   var tds="<td><input type='radio' name='radioId' value='"+row.id+"' ></td>"+
+	   "<td>"+row.id+"</td>"+
+	   "<td>"+row.name+"</td>"
+	     
+    return tds;
+}
+</script>
+
+
+
+
+
+
+
+
+

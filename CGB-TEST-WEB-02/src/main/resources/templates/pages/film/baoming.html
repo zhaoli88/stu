@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+    <title>加盟报名页面</title>
+    <style>
+	.pg_header{
+            position: fixed;
+            height: 48px;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #2459a2; 
+            line-height: 48px;
+        }
+	.pg_header .logo{
+            margin: 0 auto;
+            float: left;
+            width: 200px;
+            text-align: center;
+            line-height: 48px;
+            font-size: 28px;
+            color: white;
+        }
+	.pg_dl{
+            left: 400px;
+            display: inline-block;
+            padding: 0 40px;
+            color: white;
+        }
+        .pg_header .pg_dl:hover{
+            background-color: #2459fb;
+            cursor: pointer;
+        }
+        .left{
+            margin-top: 20px;
+            width: 400px;
+            display: inline-block;
+            float: left;        
+        }
+		
+        .pg_body{
+            margin-top: 50px;
+            font-size: 18px;
+            display: inline-block;
+            width: 200px;
+        }
+        .pg_body .menu{
+            width: 800px;
+            padding: 15px;    
+            float: left;
+            font-weight: bold;
+        }
+		input[type="text"]{
+            width: 200px;
+            height: 25px;
+            border-radius: 6px;
+        }
+        input[type="nl"]{
+            width: 200px;
+            height: 25px;
+            border-radius: 6px;
+        }
+		 input[type="nl1"]{
+            width: 200px;
+            height: 25px;
+            border-radius: 6px;
+        }
+        input[type="button"]{
+            background-color: #555555;
+               border: none;
+            color: white;
+            padding: 12px 29px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 17px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        input[type="submit"]{
+            background-color: #555555;
+               border: none;
+            color: white;
+            padding: 12px 29px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 17px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+	   .kong{
+            margin-top: -54px;
+            margin-left: 200px;
+            float:left;
+            padding: 15px;
+        }
+        .img{
+            width: 50px;
+            height: 40px;
+        }
+        .can{
+            width: 1500px;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            display: inline-block;
+        }
+        .tian{
+            color: red;
+            float: right;
+            font-size: 12px;
+            margin-right: -120px;
+            margin-top: -25px;
+        }
+        .mybutton{
+            width: 80px;
+            height: 40px;
+            margin: 20px,30px;
+        }
+        #changdi{
+            margin-bottom: 40px;
+        }
+	</style>
+   
+</head>
+<body style="margin: 0" background="images/bj_tp.jpg">
+<!-- style=" background-repeat:no-repeat ;background-size:100% 100%;background-attachment: fixed;"
+> -->
+    <div class = "pg_header">
+        <a class = "logo">熊猫大侠餐饮</a>
+        <a class="pg_dl">提交报名信息,方便您得到上门接送服务</a>    
+    </div>
+    <form  class="ftdy" method="post" action="doSaveObject">
+        <div class="left"></div>
+        <div class="pg_body">
+                <div class="menu">报名类型:</div>
+                    <div class="kong">
+                        <input type="text" name="type" id="type" placeholder="请输入加盟学习类型">
+                        <span class="tian" style="margin-top: 4px">*(为必填)</span>
+                    </div>
+                <div class="menu">姓名:</div>
+                    <div class="kong">
+                        <input type="text" name="sname" id="name" placeholder="姓名">
+                        <span class="tian" style="margin-top: 4px">*(为必填)</span>
+                    </div>
+                <div class="menu">性别:</div>
+                    <div class="kong" style="width:200px;">
+                         男<input type="radio" name="gender" id="gender" value="男">
+                         女 <input type="radio" name="gender" id="gender"  value="女">
+                    </div>
+                <div class="menu">年龄:</div>
+                    <div class="kong">
+                        <input name="age" id="age"  placeholder="年龄" onblur="check()" maxlength="2" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+                        <span id="div2" class="tian" style="margin-top: -25px">*(为必填)</span>
+                    </div>
+                <div class="menu">(选填)身份证号码:</div>
+                    <div class="kong">
+                        <input id="text3" type="nl1" name="nember" onblur="check()" placeholder="身份证号码" 
+                        maxlength="18" onkeyup="value=value.replace(/[^\w\.\/]/ig,'' " onchange="isIdCardNo(num)"/>
+                        <!-- onkeyup="value=value.replace(//s/g,'')"   不准有空格-->
+                        <span id="div3" class="tian">*(为必填)</span>
+                    </div>
+                <div class="menu">籍贯:</div>
+                    <div class="kong">
+                        <input id="i2" type="text" name="home" placeholder="籍贯" onblur="check()" />
+                    </div>
+                <div class="menu">电话号码:</div>
+                    <div class="kong">
+                        <input id="i5" type="text" name="tel"  onblur="check()" placeholder="电话号码"  maxlength="11" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+                    </div>
+                <div class="menu">邮箱地址:</div>
+                    <div class="kong">
+                        <input id="text4" type="text" name="email"  placeholder="邮箱地址" onblur="check()"/>
+                        <span id="div4" class="tian">*(为必填)</span>
+                    </div>
+                    <div class="menu">期望在哪个门店学习:</div>
+                    <div class="kong">
+                        <input id="da" type="text" name="place"  placeholder="门店区域" onblur="check()" />
+                        <span id="div4" class="tian">*(为必填)</span>
+                    </div>
+                
+
+            <button class="mybutton" id="submit" type="submit" onclick=doSave()>提交</button>
+            <button class="mybutton" id="button" type="button" onclick=doreturn() value="取  消">取消</button>
+    </form>
+    
+    
+    <script type="text/javascript">
+  
+  
+  function doreturn(){
+	  window.location.href="doIndexUI";
+	  
+  } 
+    function doSave(){
+   	 //1.获取表单数据
+   	 var params=doGetEditFormData();
+   	 //2.发起异步请求
+   	 debugger;
+   	 var url="baoming/doInsertstudent";
+   	 $.post(url,params,function(result){
+   		 if(result.state==1){
+   			 alert(result.message);
+   			
+   		 }else{
+   			alert(result.message);
+   		 }
+   	 })
+   	window.location.href="doIndexUI";
+    }
+    function doGetEditFormData(){
+   	 //获取用户输入的数据
+   	 var params={
+   	    type:$("#type").val(),
+   	    sname:$("#name").val(),
+   	    gender:$("#gender").val(),
+   	    age:$("#age").val(),
+   	    nember:$("#text3").val(),
+   	    home:$("#i2").val(),
+   	    tel:$("#i5").val(),
+   	    email:$("#div4").val(),
+   	    place:$("#da").val()
+   	 }
+   	 return params;
+    }
+    
+    
+    
+    
+    
+    </script>
+    
+    
+    
+</body>
+</html>

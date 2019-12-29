@@ -1,0 +1,105 @@
+
+<!-- 一个项目列表 -->
+	<div class="col-sm-3" id="dataContainerId" style="display: none">
+		<div class="thumbnail">
+			<!--span class="e-label"><div>Sale</div></span-->
+			<span class="service-link text-center"> <img id="imgId"
+			style="width:200px;height: 260px"
+				class="img-responsive" src="images/f-pro-1.jpg" alt="">
+				<div class="list-inline">
+					<a href=""><i class="fa fa-eye"></i></a> <a href=""><i
+						class="fa fa-link"></i></a>
+				</div>
+			</span>
+			<div class="caption">
+				<div class="category" id="filmName">
+		
+				</div>
+				<div class="pull-right" id="starId">
+					<i id="star" class="fa fa-star"></i>
+				</div>
+				<h3 id="introduce"></h3>
+				<strong>免费体验</strong>
+				<div>
+					<a href="#" class="btn btn-default" role="button">报名</a><span
+						class="pull-right"><i class="fa fa-heart-o"></i> 收藏</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 一个项目列表 -->
+	
+<!-- 项目列表 -->
+<div id="movieClumns">
+	<section class="featured-product">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="">
+						<h1>
+							<span class="t-color-1">项目</span>
+						</h1>
+						<div class="heading-border b-color-1"></div>
+					</div>
+				</div>
+			</div>
+			<!-- section title -->
+			<div id="carousel-example-generic" class="carousel slide"
+				data-ride="carousel">
+				<ol class="carousel-indicators" id="pageId">
+					<li id="leftId" data-target="#carousel-example-generic" data-slide-to="0"
+						class="active"><i class="fa fa-angle-left"></i></li>
+					<li id="rightId" data-target="#carousel-example-generic" data-slide-to="1"><i
+						class="fa fa-angle-right"></i></li>
+				</ol>
+				<div class="carousel-inner" role="listbox">
+					<div class="item active" id="active">
+						<div class="row" id="rowId">
+							
+						 <!-- 插入单个项目列表对象 -->	
+							
+						</div>
+					</div>
+				</div>
+	</section>
+
+
+
+<script type="text/javascript">
+	$(function() {
+		var category = $("#movieClumns").data("category");
+		if (!category) {
+			category = "包含名称的所有项目";
+		}
+		
+		$(".t-color-1").html(category);
+		
+		// 添加页面跳转事件
+		//$("#pageId").on("click", "#leftId, #rightId", doJumpToPage)
+		
+		doInitPage();
+	})
+	
+	function doInitPage() {
+		var data = $("#movieClumns").data("data");
+		for (var i in data) {
+			var cloneDiv = $("#dataContainerId").clone(true);
+			// 将div显示
+			$(cloneDiv).css("display", "block");
+			$(cloneDiv).find(".category").html(data[i].name);
+			$(cloneDiv).find("#introduce").html(data[i].lable);
+			$(cloneDiv).find("img").prop("src", data[i].route);
+			// 修改是否是vip
+			var strong = data[i].vip?"vip级服务":"免费接送";
+			$(cloneDiv).find("strong").html(strong);
+			// 修改评分
+			doAddGrade(data[i].grade, cloneDiv);
+			// 克隆展示项目div
+			$("#rowId").append(cloneDiv);
+		}
+	}
+	
+	
+</script>
+

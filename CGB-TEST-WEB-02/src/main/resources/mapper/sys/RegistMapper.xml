@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.cy.sys.dao.RegistDao">
+  
+  <insert id="insertObject">
+		insert into students 
+		(type,sname,gender,age,nember,home,tel,email,place)
+		values
+		(#{type},#{sname},#{gender},#{age},#{nember},#{home},#{tel},#{email},#{place})
+	</insert>
+	
+  </mapper>

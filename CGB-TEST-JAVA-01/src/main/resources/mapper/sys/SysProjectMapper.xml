@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.pj.sys.dao.SysProjectDao">
+	  
+	  <select id="findObjects" resultMap="sysProject">
+           select c.*
+           from sys_film c
+            <include refid="pageWhere"/>
+           limit #{startIndex},#{pageSize}
+     </select>
+	  
+	  <insert id="insertProject"
+             parameterType="com.cy.pj.sys.entity.SysProject"
+             useGeneratedKeys="true"
+             keyProperty="id">
+          insert into sys_film
+          (name,lable,on_time,grade,introduce,category_id,area,route)
+           values
+          (#{name},#{lable},#{onTime},#{grade},#{introduce},#{categoryId},#{area},#{route})
+     </insert>
+	  
+	  <select id="findProjectById" resultMap="sysProject">
+		select *
+		from sys_film 
+		where id = #{id}
+	</select>
+	  
+	  <update id="updateObject">
+         update sys_film
+         <set>
+          <if test="name!=null and name!=''">
+             name=#{name},
+          </if>
+          <if test="lable!=null and lable!=''">
+             lable=#{lable},
+          </if>
+          <if test="onTime!=null and onTime!=''">
+             on_time=#{onTime},
+          </if>
+          <if test="grade!=null and grade!=''">
+             grade=#{grade},
+          </if>
+          <if test="introduce!=null and introduce!=''">
+             introduce=#{introduce},
+          </if>
+          <if test="categoryId!=null and categoryId!=''">
+             category_id=#{categoryId},
+          </if>
+          <if test="area!=null and area!=''">
+             area=#{area},
+          </if>
+          <if test="route!=null and route!=''">
+             route=#{route},
+          </if>
+         </set>
+            where id=#{id}
+     </update>
+	  
+	  
+	  <delete id="delteObjects">
+     	delete from sys_film
+		where id in
+		<foreach collection="ids" open="(" close=")" separator="," item="item">
+			#{item}
+		</foreach>
+     </delete>
+	  
+	  <select id="getRowCount" resultType="int">
+           select count(*)
+           from sys_film
+           <include refid="pageWhere"/>
+     </select>
+      <select id="findPageObjects" resultType="map">
+           select  c.*,(select p.name from sys_category p where p.id = c.category_id) category
+           from sys_film c
+            <include refid="pageWhere"/>
+           limit #{startIndex},#{pageSize}
+       </select>   
+          
+          
+           <sql id="pageWhere">
+         <where>
+           <if test="name!=null and name!=''">
+              name like concat("%",#{name},"%")
+           </if>
+         </where>
+          </sql>
+           
+    <resultMap id="sysProject" type="com.cy.pj.sys.entity.SysProject" >
+      	<id column="id" property="id"/>
+      	<result column="on_time" property="onTime"/>
+      	<result column="category_id" property="categoryId"/>
+      </resultMap>
+     
+     
+</mapper>

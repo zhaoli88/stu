@@ -1,0 +1,162 @@
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">服务项目管理</h3>
+
+				<div class="box-tools">
+					<div class="input-group input-group-sm" style="width: 350px;">
+						<input type="text" name="table_search" id="searchNameId"
+							class="form-control pull-right" placeholder="服务项目名称">
+
+						<div class="input-group-btn">
+							<button type="button" class="btn btn-default btn-search">
+                                <i class="fa fa-search"></i>
+							</button>
+							<button type="button" class="btn btn-default btn-delete">删除</button>
+							<button type="button" class="btn btn-default btn-add">添加</button>
+							<button type="button" class="btn btn-default btn-update">修改</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>服务项目</th>
+							<th>类型</th>
+							<th>加盟价格</th>
+							<th>上架时间</th>
+							<th>服务人数(人)</th>
+							<th>实操门店</th>
+							<th>门店照片</th>
+							<th>项目介绍</th>
+						</tr>
+					</thead>
+					<tbody id="tbodyId"></tbody>
+				</table>
+			</div>
+			<div id="pageId" class="box-footer clearfix">
+			</div>
+			<!-- /.box-body -->
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+<script type="text/javascript">
+   $(document).ready(function(){
+	   $("#pageId").load("doPageUI",function(){
+		   doGetObjects();
+	   });
+   $(".input-group-btn")
+	   .on("click",".btn-search",doQueryObjects)
+	   .on("click",".btn-delete",doDeleteObjects)
+ 	   .on("click",".btn-add,.btn-update",doAddOrUpdate); 
+   });
+   function doAddOrUpdate(){
+	   //1.判定点击的对象
+	   var title;
+	   if($(this).hasClass("btn-add")){
+		   title="添加项目";
+		   doLoadEditPage(title);
+	   }else if($(this).hasClass("btn-update")){
+		   title="修改项目";
+		   var id=getCheckedId();
+		   if(id==null){
+			   alert("请选择要修改的对象！");
+			   return;}
+		   $(".container-fluid").data("id",id);
+		   doLoadEditPage(title);
+	   }
+   }
+   function getCheckedId(){
+	   return $("tbody input[name='radioId']:checked").val();
+   }
+   
+   function doLoadEditPage(title){
+	   var url="project/project_edit"
+	   $(".container-fluid").load(url,function(){
+		   $(".box-title").html(title);
+	   }) 
+   }
+   function doDeleteObjects(){
+	   //1.获取选中的值
+	   var array=[];
+	   $("#tbodyId input[type='radio']").each(function(){
+		   if($(this).prop("checked")){
+			   array.push($(this).val());
+		   }
+	   });
+	   //2.构建参数对象
+	   var params={id:array.toString()};
+	   if(!confirm("是否确认删除")) return;
+	   //3.异步请求执行删除
+	   var url="project/doDeleteObjectById";
+	   $.post(url,params,function(result){
+		   if(result.state==1){
+			   alert(result.message);
+			   doGetObjects();
+		   }else{
+			   alert(result.message);
+		   }
+	   })
+   }
+   function doQueryObjects(){
+	   $(".pagination").data("pageCurrent",1);
+	   doGetObjects();
+   }
+   //页面加载完成异步加载当前页数据
+   function doGetObjects(){
+	   var url="project/doFindPageObjects";
+	   var pageCurrent=$("#pageId").data("pageCurrent");
+	   if(!pageCurrent)pageCurrent=1;
+	   var params={"pageCurrent":pageCurrent}
+	   params.name=$("#searchNameId").val().trim();
+	   $.getJSON(url,params,function(result){
+		   console.log(result)
+		   doHandleResponseResult(result);
+	   });
+   }
+   function doHandleResponseResult(result){
+	   if(result.state==1){
+		   console.log(result.data.records);
+		  doSetTableBodyRows(result.data.records);
+		  doSetPagination(result.data);
+		}else{
+		  alert(result.message);
+	   }
+   }
+   //通过服务端返回的数据初始化页面
+   function doSetTableBodyRows(data){
+	  //1.获取tbody对象，并清空内容
+	  var tBody=$("#tbodyId");
+	  tBody.empty();
+	  //2.迭代data内容将数据追加到tbody中
+	  for(var i in data){
+		  var tr=$("<tr></tr>");
+		  tr.data("rowData",data[i]);
+		  var tds=doCreateTds(data[i]);
+		  tr.append(tds);
+		  tBody.append(tr);
+	  }
+   }
+   function doCreateTds(row){
+	   var tds="<td><input type='radio' name='radioId' value='"+row.id+"' ></td>"+
+	     "<td>"+row.name+"</td>"+
+	     "<td>"+row.category+"</td>"+
+	     "<td>"+row.lable+"</td>"+
+	     "<td>"+row.on_time+"</td>"+
+	     "<td>"+row.grade+"</td>"+
+	     "<td>"+row.area+"</td>"+
+	     "<td>"+row.route+"</td>"+
+	     "<td>"+row.introduce+"</td>";
+       return tds;
+   }
+</script>
+
+
+
+

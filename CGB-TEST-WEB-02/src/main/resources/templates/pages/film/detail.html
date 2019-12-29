@@ -1,0 +1,88 @@
+
+
+<div class="clearfix block1"
+	style="margin: 0 auto; text-align: center; width: 1000px; height: 800px; padding-top: 50px">
+	<table>
+		<tbody>
+			<tr>
+				<td>
+					<!-- 影片信息 -->
+					<div id="minfo" class="clearfix">
+						<div class="img">
+							<img id="detailImgId" src="" style="width: 450px; height: 550px;"
+								alt="熊猫大侠餐饮平台" title="熊猫大侠餐饮平台" /> <br />
+
+							<div class="ssbutton">
+								<a rel="nofollow"
+									href="javascript:$('html,body').animate({scrollTop:$('#screenshots').offset().top},300);">
+									<i class="fa fa-camera-retro"></i> 详询介绍
+								</a>
+							</div>
+						</div>
+				</td>
+				<td >
+					<!--影片信息-->
+					<link href="https://static-80s.b0.upaiyun.com/css/reveal.css"
+						rel="stylesheet" type="text/css" /> <script language="javascript"
+						src="https://static-80s.b0.upaiyun.com/js/jquery.reveal.js"></script>
+
+					<div class="info" style="padding-bottom: 200px;width: 400px;padding-left: 40px">
+						<a href="http://www.80s.tw/blog/?id=3" target="_blank"> <span
+							class="version4 versionico" title="开个面馆年入百万">&nbsp;</span></a>
+						<h1 id="filmNameId" class="font14w">熊猫大侠餐饮平台</h1>
+						<span>
+						  <a href="javasript:void(0)">熊猫大侠餐饮平台</a>&nbsp;
+						        熊猫大侠餐饮平台
+						</span> <br />
+						<div class="clearfix">
+							<span class="span_block">
+							    <span class="font_888">标签:</span>
+								<a id="lableId" href="javasript:void(0)">成都市及周边</a>&nbsp;
+							</span> 
+								<span class="span_block">
+									<span class="font_888">具体区域:</span>
+									<a id="areaId" href="javasript:void(0)">城南</a>&nbsp;
+							     </span> <br>
+							    <span class="span_block">
+							        <span class="font_888">具体区域:</span>
+								    <a href="javasript:void(0)">灵活</a>&nbsp; 
+								</span> 
+						</div>
+
+						<div class="clearfix" style="margin-bottom: 5px;">
+							<span id="gradeId" class="span_block"> <span class="font_888">服务更新时间:</span>
+								<span class="score sc7"></span>
+								<a id="onTimeId" href="javasript:void(0)"></a>&nbsp;
+							</span>
+							
+							<span class="span_block"> <span class="font_888">学员评分：</span>
+								<span class="score sc7"></span>
+								<a id="gradeId" href="javasript:void(0)">9.5</a>&nbsp;
+							</span>
+						</div>
+
+					<div class="clearfix" id="movie_content" style="width: 440px;">
+						<span class="font_888">特色介绍：</span>
+						<a id="introduceId" href="javasript:void(0)">熊猫大侠餐饮平台</a>&nbsp;
+					</div>
+					</div>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<script type="text/javascript">
+	$(function() {
+		var data = $(".header-bottom").data("rowData");
+		alert(data.route)
+		$("#filmNameId").html(data.name);
+		$("#detailImgId").prop("src", data.route);
+		$("#lableId").html(data.lable);
+		$("#areaId").html(data.area);
+		$("#onTimeId").html(data.onTime);
+		$("#gradeId").html(data.area);
+		$("#introduceId").html(data.introduce);
+	})
+</script>

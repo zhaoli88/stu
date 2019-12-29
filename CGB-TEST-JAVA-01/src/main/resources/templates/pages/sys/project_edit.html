@@ -1,0 +1,218 @@
+<!-- Horizontal Form -->
+ <div class="box box-info">
+      <div class="box-header with-border">
+        <h3 class="box-title">添加用户</h3>
+      </div>
+      <!-- /.box-header -->
+      <!-- form start -->
+      <form class="form-horizontal">
+        <div class="box-body">
+          <div class="form-group">
+            <label for="filmnameId" class="col-sm-2 control-label">项目名称</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="filmnameId">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="lableId" class="col-sm-2 control-label">服务费用</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control"  id="lableId">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="categoryId" class="col-sm-2 control-label">分类类型</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control load-sys-dept" readonly="readonly" id="categoryId" placeholder="类型">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="onTimelId" class="col-sm-2 control-label">上架时间</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control"  id="onTimeId">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="gradeId" class="col-sm-2 control-label">数量(人)</label>
+              <div class="col-sm-10">
+              <input type="text" class="form-control"  id="gradeId">
+             </div>
+          </div>
+          <div class="form-group">
+            <label for="areaId" class="col-sm-2 control-label">实操门店区域</label>
+              <div class="col-sm-10">
+              <input type="text" class="form-control"  id="areaId">
+             </div>
+          </div>
+          <div class="form-group">
+            <label for="addrId" class="col-sm-2 control-label">图片地址</label>
+              <div class="col-sm-10">
+              <input type="text" class="form-control"  id="addrId">
+             </div>
+          </div>
+          <div class="form-group">
+            <label for="introduceId" class="col-sm-2 control-label">具体介绍</label>
+              <div class="col-sm-10">
+              <input type="text" class="form-control"  id="introduceId">
+             </div>
+          </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+          <button type="button" class="btn btn-default btn-cancel">返回</button>
+          <button type="button" class="btn btn-info pull-right btn-save">保存</button>
+        </div>
+        <!-- /.box-footer -->
+      </form>
+     <div class="layui-layer layui-layer-page layui-layer-molv layer-anim" id="treeLayer" type="page" times="2" showtime="0" contype="object"
+		style="z-index:59891016; width: 300px; height: 450px; top: 100px; left: 500px; display:none">
+		<div class="layui-layer-title" style="cursor: move;">选择加盟学习类型</div>
+		<div class="layui-layer-content" style="height: 358px;">
+			<div style="padding: 10px;" class="layui-layer-wrap">
+				<ul id="zTreeId" class="ztree"></ul>    <!-- 动态加载树 -->
+			</div>
+		</div>
+		<span class="layui-layer-setwin"> <a class="layui-layer-ico layui-layer-close layui-layer-close1 btn-cancel" ></a></span>
+		<div class="layui-layer-btn layui-layer-btn-">
+			<a class="layui-layer-btn0 btn-confirm">确定</a>
+			<a class="layui-layer-btn1 btn-cancel">取消</a>
+	     </div>
+      </div>
+    </div>
+<script type="text/javascript" src="bower_components/ztree/jquery.ztree.all.min.js"></script>
+<script type="text/javascript" src="bower_components/layer/layer.js"></script>
+<script type="text/javascript">
+ var zTree; 
+ //初始化zTree时会用到
+ var setting = {
+	data : {
+		simpleData : {
+			enable : true,
+			idKey : "id",  //节点数据中保存唯一标识的属性名称
+			pIdKey : null,  //节点数据中保存其父节点唯一标识的属性名称
+			rootPId : null  //根节点id
+		}//json 格式javascript对象
+	}
+ }//json 格式的javascript对象
+ $(document).ready(function(){
+	 //页面加载完成以后加载角色信息并初始化页面
+	 var id=$(".container-fluid").data("id");
+	 if(id!=null)
+		 doLoadFilm(id);
+	 //事件注册
+	 $(".box-footer")
+	 .on("click",".btn-cancel",doCancel)
+	 .on("click",".btn-save",doSaveOrUpdate);
+	 
+	  $("#treeLayer")
+	  .on("click",".btn-cancel",doHideTree)
+	  .on("click",".btn-confirm",doConfirm);
+	 
+	 $(".form-horizontal")
+	 .on("click",".load-sys-dept",doLoadZTreeNodes);
+ });
+ function doLoadFilm(id){
+	doFindObjectById(id);
+ }
+ function doFindObjectById(id){
+	 var url="project/doFindProjectById";
+	 var params={"id":id}
+	 $.getJSON(url,params,function(result){
+		 if(result.state==1){
+			doInitFormData(result.data);
+			$("#mainContentId").data("rowData",result.data);
+		 }else{
+			alert(result.message);
+		 }
+	 })
+ }
+ function doInitFormData(data){
+	 $("#filmnameId").val(data.name);
+	 $("#lableId").val(data.lable);
+	 $("#gradeId").val(data.grade);
+	 $("#areaId").val(data.area);
+	 $("#addrId").val(data.route);
+	 $("#onTimeId").val(data.onTime);
+	 $("#introduceId").val(data.introduce);
+	 var cid = data.categoryId
+	 url = "category/findObjectById";
+	 var param = {id:cid}
+	 $.post(url,param,function(result){
+		 if(result.state==1){
+			$("#categoryId").val(result.data.name);
+			$("#categoryId").data("categoryId",result.data.id)
+		 }else{
+			alert(result.message);
+		 }
+	 })
+ }
+ function doSaveOrUpdate(){
+	 var rowData=$("#mainContentId").data("rowData");
+	 //1.获取表单数据
+	 var params=doGetEditFormData();
+	 if(rowData)params.id=rowData.id;
+	 //2.发起异步请求
+	 var insertUrl="project/doInsertProject";
+	 var updateUrl="project/doUpdateObject";
+	 var url=rowData?updateUrl:insertUrl;
+	 $.post(url,params,function(result){
+		 if(result.state==1){
+			 alert(result.message);
+			 doCancel();
+		 }else{
+			alert(result.message);
+		 }
+	 })
+ }
+ function doGetEditFormData(){
+	 //获取用户输入的数据
+	 var params={
+	    name:$("#filmnameId").val(),
+	    lable:$("#lableId").val(),
+	    grade:$("#gradeId").val(),
+	    area:$("#areaId").val(),
+	    route:$("#addrId").val(),
+	    onTime:$("#onTimeId").val(),
+	    introduce:$("#introduceId").val(),
+	    categoryId:$("#categoryId").data("categoryId")
+	 }
+	 return params;
+ }
+ function doHideTree(){
+	  $("#treeLayer").css("display","none");
+ }
+ //确定按钮
+ function doConfirm(){
+	  //1.获取选中的记录(id,name);
+	  var selectedNodes=zTree.getSelectedNodes();
+	  var node=selectedNodes[0];
+	  //2.将id和name填写或绑定在具体对象上
+	  $("#categoryId").val(node.name);
+	  $("#categoryId").data("categoryId",node.id)
+	  //3.隐藏zTree对应的Div
+	  doHideTree();
+ }
+ 
+ function doLoadZTreeNodes(){
+	  var url="category/doFindCategory";
+	  $("#treeLayer").css("display","block");
+	  $.getJSON(url,function(result){
+		  if(result.state==1){
+			  zTree = $.fn.zTree.init($("#zTreeId"),setting,result.data);
+		  }else{
+			  alert(result.message);
+		  }
+	  });
+ }
+ function doCancel(){
+	$("#mainContentId").removeData("rowData");
+	$("#mainContentId").load("project/project_list");
+ }
+</script>
+    
+    
+    
+    
+    
+    
+    

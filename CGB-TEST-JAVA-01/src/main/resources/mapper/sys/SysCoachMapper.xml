@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.pj.sys.dao.SysCoachDao">
+	  
+	  <update id="updateObject">
+     update coach
+     <set>
+          <if test="cname!=null and cname!=''">
+             cname=#{cname},
+          </if>
+          <if test="age!=null and age!=''">
+             age=#{age},
+          </if>
+          <if test="tage!=null and tage!=''">
+             tage=#{tage},
+          </if>
+          <if test="jid!=null and jid!=''">
+             jid=#{jid},
+          </if>
+          <if test="location!=null and location!=''">
+             location=#{location},
+          </if>
+          <if test="lid!=null and lid!=''">
+             site=#{site},
+          </if>
+          <if test="url!=null and url!=''">
+             url=#{url},
+          </if>
+          <if test="note!=null and note!=''">
+             comment=#{comment},
+          </if>
+         </set>
+         where id=#{id}
+     </update>
+	  
+	  <insert id="insertCoach">
+     insert into coach
+     (cname,age,tage,jid,location,site,url,comment)
+     values
+     (#{cname},#{age},#{tage},#{jid},#{location},#{site},#{url},#{comment})
+     </insert>
+	  
+	  <select id="findCoachById" resultMap="sysCoach">
+     select * from coach
+     where id=#{id}
+     </select>
+	  
+	   <delete id="deleteObject">
+     delete from coach
+     where
+     id=#{id}
+       </delete>
+	  
+	  <select id="getRowCount" resultType="int">
+           select count(*)
+           from coach
+           <include refid="pageWhere"/>
+     </select>
+     
+      <select id="findPageObjects" resultType="com.cy.pj.sys.entity.SysCoach">
+           select *
+           from coach
+            <include refid="pageWhere"/>
+           limit #{startIndex},#{pageSize}
+     </select>
+	  
+	  <!-- 共性代码提取 -->
+	  <sql id="pageWhere">
+         <where>
+           <if test="cname!=null and cname!=''">
+              cname like concat("%",#{cname},"%")
+           </if>
+         </where>
+     </sql>
+     
+     <resultMap type="com.cy.pj.sys.entity.SysCoach" id="sysCoach">
+     	<id column="id" property="id"/>
+     	<id column="name" property="name"/>
+      	<result column="jid" property="jid"/>
+      	<result column="location" property="location"/>
+     </resultMap>
+     
+</mapper>

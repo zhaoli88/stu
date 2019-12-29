@@ -1,0 +1,142 @@
+<!docttype html> 
+<html>
+	<head>
+		<meta cahrset="utf-8"/>
+			<title>html标签</title>
+		<style>
+			table,td{
+				border: 2px solid red;
+				border-collapse:collapse;
+			}
+			table{
+				margin-left:auto;
+				margin-right: auto;
+				background:lightgrey ;
+			}
+			td{
+				/*设置单元格*/
+				padding: 5px;
+				
+			}
+			tr:last-child td{
+				text-align: center;
+			}
+		</style>
+	</head>
+		<body style="margin: 0" background="bj_tp.jpg"
+style=" background-repeat:no-repeat ;
+background-size:100% 100%;
+background-attachment: fixed;"
+text="#68228B">
+			<form action="#">
+				<table>
+					 <caption>用户报名</caption>
+				<tr>
+					<td>类型：</td>
+					<td>
+						<input type="text" name="type" id="type"/>
+					</td>
+				</tr>
+				<tr>
+					<td>姓名：</td>
+					<td>
+						<input type="name" name="name" id="name"/>
+					</td>
+				</tr>
+				<tr>
+					<td>性别：</td>
+					<td>
+					<input type="gender" name="gender" id="gender"/>	
+					</td>
+				</tr>
+				<tr>
+					<td>年龄：</td>
+					<td>
+						<input type="age" name="age" id="age"/>
+					</td>
+				</tr>
+				<tr>
+					<td>身份证号码：</td>
+					<td>
+						<input type="text" name="nember" id="nember"/>
+					</td>
+				</tr>
+				<tr>
+					<td>籍贯：</td>
+					<td>
+						<input type="text" name="home" id="home"/>
+					</td>
+				</tr>
+				<tr>
+					<td>电话号码：</td>
+					<td>
+						<input type="text" name="tel" id="tel"/>
+					</td>
+				</tr>
+				<tr>
+					<td>邮箱：</td>
+					<td>
+						<input type="text" name="email" id="email"/>
+					</td>
+				</tr>
+				
+				
+				<tr>
+					<td>选择场地：</td>
+					<td>
+						<input type="text" name="place" id="place"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					 <input type="submit" value="报名" onclick=dosave()/>
+					 <input type="reset" value="重置"/>
+					 </td>
+				</tr>
+			</table>
+						
+		</form>
+		
+		<script type="text/javascript">
+		
+	function dosave(){	
+		//1.获取表单数据
+		 var params=doGetEditFormData();
+		 var url="join/doInsertJoin.do";
+		 
+		 $.post(url,params,function(result){
+			 if(result.state==1){
+				 alert(result.message);
+				 doCancel();
+			 }else{
+				alert(result.message);
+			 }
+		 })
+	 }
+	
+	function doGetEditFormData(){
+		 //获取用户输入的数据
+		 var params={
+		    type:$("#type").val(),
+		    sname:$("#sname").val(),
+		    gender:$("#gender").val(),
+		    age:$("#age").val(),
+		    nember:$("#nember").val(),
+		    home:$("#home").val(),
+		    tel:$("#tel").val(),
+		    email:$("#email").val(),
+		    place:$("#place").val()
+		    
+		 }
+		
+		 return params;
+	 }
+	
+	
+		
+		
+		
+		
+		</script>
+	</body>
+</html>

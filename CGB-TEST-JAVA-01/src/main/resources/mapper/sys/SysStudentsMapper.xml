@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.pj.sys.dao.SysStudentsDao">
+	  
+	  <select id="findStudentById" resultType="com.cy.pj.sys.entity.SysStudents">
+		select * from students 
+		where id = #{id}
+	</select>
+	  
+	  <delete id="deleteObjects">
+    delete from students
+    where id in
+    <foreach collection="ids" open="(" close=")" separator="," item="item">
+    #{item}
+    </foreach>
+      </delete>
+	  
+	  <update id="updateObject">
+          update students set 
+          type=#{type},sname=#{sname},gender=#{gender},age=#{age},nember=#{nember},home=#{home},tel=#{tel},
+           email=#{email},place=#{place} where id=#{id}     
+     </update>
+	  
+	  <insert id="insertStudent"
+             parameterType="com.cy.pj.sys.entity.SysStudents"
+             useGeneratedKeys="true"
+             keyProperty="id">
+          insert into students
+          (type,sname,gender,age,nember,home,tel,email,place)
+           values
+          (#{type},#{sname},#{gender},#{age},#{nember},#{home},#{tel},#{email},#{place})
+     </insert>
+	  
+	   <select id="getRowCount"
+           resultType="int">
+           select count(*)
+           from students
+          where sname like concat("%",#{sname},"%")        
+   </select>
+   
+   <select id="findPageObject"
+           resultType="com.cy.pj.sys.entity.SysStudents">
+         select *from students 
+         <!-- order by age desc -->
+         where sname like concat("%",#{sname},"%") 
+         limit #{startIndex},#{pageSize}
+          
+   </select>
+	  
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.cy.pj.sys.dao.SysSiteDao">
+  
+  <!-- 基于菜单id执行删除操作 -->
+	<delete id="deleteObject">
+		delete from sys_site
+		where id=#{id}
+	</delete>
+  
+  <!-- 用于向表中写入数据 -->
+	<insert id="insertObject" parameterType="com.cy.pj.sys.entity.SysSite">
+		insert into sys_site
+		(name,id,city,site,tel,comment)
+		values
+		(#{name},#{id},#{city},#{site},#{tel},#{comment})
+	</insert>
+  
+  <!-- 显示页面信息的操作 -->
+  <select id="findPageObjects" resultType="com.cy.pj.sys.entity.SysSite">
+		select * from sys_site
+		limit #{startIndex},#{pageSize}
+	</select>
+	<select id="getRowCount" resultType="int">
+		select count(*)
+		from sys_site
+	</select>
+  
+  </mapper>
